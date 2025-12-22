@@ -9,3 +9,6 @@ def products(request):
     return render(request, 'accounts/products.html')
 def customer(request):
     return render(request, 'accounts/customer.html')
+
+def create_task(request):
+    return render(request, 'accounts/create_task.html')

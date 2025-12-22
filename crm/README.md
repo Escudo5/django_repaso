@@ -51,3 +51,35 @@ Para poder modificar una en concreto usamos el id en el path.
 
 
 Aunque cambiemos de DB las url no se modifican ni las views.
+
+## Herencia de templates
+
+Usamos el comando de jinja : ``` {% extends 'nombre de archivo' %} ```
+
+
+
+# Conceptos
+
+## Models
+Un Model de django es una clase que describe una tabla de la base de datos y como trabajar con ella.
+
+Cada objeto es una fila en la DB.
+
+En nuestro ejemplo de la lista de tares, cada tarea es una instancia de la clase.
+
+### Migracion
+
+Es como un "diff" versionado en tu DB.
+
+#### Flujo mental: 
+
+``` scss 
+models.py (cambio)
+   ↓
+makemigrations   → crea el plan
+   ↓
+migrate          → ejecuta el plan en la BD
+
+```
+
+Si añadimos un nuevo campo `descripcion` a tareas, el HTML se recarga auto, pero la BD no, hay que hacer una migracion.
