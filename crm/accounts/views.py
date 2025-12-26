@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 import json
-from models import Task
+from .models import Task
 
 # Create your views here.
 
@@ -14,3 +14,8 @@ def customer(request):
 
 def create_task(request):
     return render(request, 'accounts/create_task.html')
+
+def get_tasks(request):
+    if (request.method == "GET"):
+        lista = list(Task.objects.all().values())
+        return JsonResponse(lista, safe=False)

@@ -24,7 +24,7 @@ response (JSON / HTML / status)
 
 ```
 
-SUpongamos que creamos una app de tareas, podemos crearlas con los atributos: nombre, fecha, importancia y booleano de completado.
+Supongamos que creamos una app de tareas, podemos crearlas con los atributos: nombre, fecha, importancia y booleano de completado.
 Usamos metodos HTTP para modificar los valores 
 | Operación  | Método |
 | ---------- | ------ |
@@ -134,7 +134,35 @@ Si recibo "GET", convierto los datos a JSON y devuelvo jsonResponse().
 
 Si recibo "POST", leo el `request.body` con `json.loads()`, creo una instancia del objeto y delvuelvo `jsonResponse`.
 
-1. Leo `requet.body` con `json.loads()` -> diccionario de datos.
+1. Leo `request.body` con `json.loads()` -> diccionario de datos.
 2. Creo la instancia de model. (Task(**data))
 3. Lo guardo con `save()`
 4. Devuelvo jsonResponse con la tarea creada o mensaje de exito.
+
+
+## Código ejemplo metodo get
+
+
+Creamos una lista con diccionarios de los objetos de la DB.
+
+EN el caso de las tareas es algo como :
+
+``` json
+[
+  {"id": 1, "name": "...", "importance": 2, "completed": false},
+  {"id": 2, "name": "...", "importance": 1, "completed": true}
+]
+```
+
+``` python
+def get_tasks(request):
+    if (request.method == "GET"):
+        lista = list(Task.objects.all().values())
+        return JsonResponse(lista, safe=False)
+```
+
+creamos una lista y añadimos todos los elementos de la clase de models, esta se tranforma en un QuerySet que corresponde a una lista de diccionarios usando el metodo .values().
+
+Con safe=False indicamos que puee aceptar una lista y no solo un diccionario.
+
+No podemos serializar un QS directamente lo tnemos que convertir a lista para que Json lo pueda leer.
