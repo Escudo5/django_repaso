@@ -166,3 +166,45 @@ creamos una lista y añadimos todos los elementos de la clase de models, esta se
 Con safe=False indicamos que puee aceptar una lista y no solo un diccionario.
 
 No podemos serializar un QS directamente lo tnemos que convertir a lista para que Json lo pueda leer.
+
+
+
+# Creando un serializer
+
+
+Añado archivo `serializers.py` y creo una clase que hereda de `serialziers.ModelSerializer` esto viene importado de la libreria de rest_framework.
+
+Creo la clase Meta dentro del serializer y le paso dos tipos de datos. 
+
+``` python 
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = '__all__' #incluye todos los campos del modelo.
+
+```
+
+
+Una vez tenemos el serializer he creado una vista api usando el serializer.
+
+Dentro de views.py, creo una clase que herede de `ListAPIView` y completo los parametros `queryset` y `serializer_class`.
+
+```python 
+class TaskListAPIView(ListAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+```
+
+Luego conecto todo en las url
+
+
+Continuamos con el resto de funciones de HTTP.
+
+Con la plantilla de `ModelViewSet`podemos hacer modificaciones muy facil. Solamente importamos la libreriua necesaria de `rest_framework.viewset`.
+
+USamos el quersyet de antes y el serializer que ya hemos creado para tasks.
+
+Vamos a conectar las urls con las clases que hemos creado, para ello usamos un router.
+
+Importamos la libreria correcta en el archivo de urls. Creamos una instancia y registamos el viewset. Añadimos las urls del router a la lista.

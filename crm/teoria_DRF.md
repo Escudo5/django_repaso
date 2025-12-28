@@ -49,6 +49,36 @@ Imagina que tienes muchas operaciones parecidas (listar, crear, borrar tareas). 
 - Esto ahorra tiempo y evita errores, ya que no tienes que definir cada URL manualmente.
 - Ejemplo: Un `TaskViewSet` puede crear rutas para listar, crear, actualizar y borrar tareas automáticamente.
 
+### ¿Qué es un router en DRF?
+Un router es como un "GPS automático" para tu API: le dices qué ViewSets tienes y él se encarga de crear todas las rutas necesarias para que puedas listar, crear, editar y borrar objetos sin escribir cada URL a mano.
+
+#### ¿Cómo se usa?
+1. Importas el router:
+	```python
+	from rest_framework.routers import DefaultRouter
+	```
+2. Creas una instancia:
+	```python
+	router = DefaultRouter()
+	```
+3. Registras tu ViewSet:
+	```python
+	router.register(r'tasks', TaskModelViewSet)
+	```
+4. Incluyes las URLs del router en tus urlpatterns:
+	```python
+	from django.urls import include
+	urlpatterns += [
+		 path('api/', include(router.urls)),
+	]
+	```
+
+#### ¿Qué rutas te crea automáticamente?
+- `/api/tasks/` para listar y crear tareas (GET y POST)
+- `/api/tasks/<id>/` para ver, actualizar o borrar una tarea concreta (GET, PUT, PATCH, DELETE)
+
+Así, puedes tener una API completa con muy poco código y sin preocuparte de escribir cada ruta manualmente.
+
 ### ¿Cómo funciona un router?
 Un router es como un GPS para tu API: le dices qué vistas tienes y él crea las rutas por ti. Así, puedes acceder a tus datos con URLs como `/tasks/` o `/tasks/1/` sin escribir cada ruta a mano.
 
