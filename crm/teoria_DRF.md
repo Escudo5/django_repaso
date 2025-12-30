@@ -89,6 +89,84 @@ Un router es como un GPS para tu API: le dices qué vistas tienes y él crea las
 - Ejemplos: Solo usuarios autenticados, solo administradores, permisos personalizados.
 - Es fundamental para proteger los datos y controlar el acceso según roles.
 
+---
+
+## Permisos en DRF
+
+### ¿Qué son los permisos?
+Los permisos en DRF son reglas que deciden quién puede hacer qué en tu API. Por ejemplo, puedes permitir que cualquiera vea las tareas, pero solo los usuarios registrados puedan crearlas o borrarlas.
+
+---
+
+### ¿Por qué son importantes?
+Imagina que tu API es una casa:
+- **Sin permisos:** cualquiera puede entrar, mover cosas, borrar lo que quiera.
+- **Con permisos:** solo los invitados pueden entrar, y solo tú puedes cambiar los muebles.
+
+---
+
+### Tipos de permisos en DRF
+DRF trae varios permisos listos para usar:
+
+- `AllowAny`: cualquiera puede acceder (no recomendado para datos sensibles).
+- `IsAuthenticated`: solo usuarios registrados pueden acceder.
+- `IsAdminUser`: solo administradores pueden acceder.
+- `IsAuthenticatedOrReadOnly`: cualquiera puede ver, pero solo usuarios registrados pueden modificar.
+
+También puedes crear tus propios permisos personalizados.
+
+---
+
+### ¿Dónde se configuran los permisos?
+Puedes poner permisos a nivel global (para toda la API) o solo en una vista o ViewSet.
+
+#### Global (en settings.py):
+```python
+REST_FRAMEWORK = {
+		'DEFAULT_PERMISSION_CLASSES': [
+				'rest_framework.permissions.IsAuthenticated',
+		]
+}
+```
+
+#### Por vista:
+```python
+from rest_framework.permissions import IsAuthenticated
+
+class TaskModelViewSet(ModelViewSet):
+		permission_classes = [IsAuthenticated]
+		# ...
+```
+
+---
+
+### Esquema de flujo de permisos
+
+```bash
+Request
+	↓
+Permiso global (settings.py)
+	↓
+Permiso en la vista (si hay)
+	↓
+¿Tiene permiso?
+	↓         ↓
+Sí        No
+	↓         ↓
+Sigue    Error 403
+```
+
+---
+
+### Ejemplo práctico
+Si pones `IsAuthenticated` en tu ViewSet, solo los usuarios logueados podrán crear, editar o borrar tareas. Si no estás logueado, verás un error 403 (prohibido).
+
+---
+
+¿Por qué crees que es útil tener permisos a diferentes niveles? ¿Qué ventajas tiene poder combinarlos?
+
+¿Te gustaría probar a proteger tu API para que solo usuarios autenticados puedan modificar datos?
+
 ### ¿Por qué es importante?
 No quieres que cualquiera pueda borrar o modificar tus datos. Los permisos te ayudan a decidir quién puede hacer qué. Por ejemplo, solo el dueño de una tarea puede editarla, o solo los administradores pueden borrar datos.
 

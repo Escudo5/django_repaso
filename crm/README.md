@@ -187,6 +187,8 @@ class TaskSerializer(serializers.ModelSerializer):
 
 Una vez tenemos el serializer he creado una vista api usando el serializer.
 
+# Creando distintas vistas de API
+
 Dentro de views.py, creo una clase que herede de `ListAPIView` y completo los parametros `queryset` y `serializer_class`.
 
 ```python 
@@ -205,6 +207,25 @@ Con la plantilla de `ModelViewSet`podemos hacer modificaciones muy facil. Solame
 
 USamos el quersyet de antes y el serializer que ya hemos creado para tasks.
 
+```python
+class TaskModelViewSet(ModelViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+```
+
 Vamos a conectar las urls con las clases que hemos creado, para ello usamos un router.
 
 Importamos la libreria correcta en el archivo de urls. Creamos una instancia y registamos el viewset. Añadimos las urls del router a la lista.
+
+
+Ahora que funciona el en buscador, he creado una nueva tarea con POST.
+
+Para editar una, necesitamos especificar el id en la barra.
+
+
+# Permisos
+
+He añadido permisos al proyecto global y ademas al ViewSet. Para ello importamos libreria de rest con el permiso que queremos configurar: `from rest_framework.permissions import IsAuthenticated`
+
+Luego he implementado una forma para loguearse y comprobar que funcionan los persmisos, en la url he añadido `    path('api-auth/', include('rest_framework.urls')), ` .

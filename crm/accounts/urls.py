@@ -13,8 +13,10 @@ urlpatterns = [
     path('products/', views.products),
     path('create_task/', views.create_task),
     #path('tasks/', views.get_tasks),
-    path('api/tasks/', views.TaskListAPIView.as_view()),
+    #path('api/tasks/', views.TaskListAPIView.as_view()),
     path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls')),
+
 
 
 ]
