@@ -1,3 +1,108 @@
+---
+
+## Filtros en DRF
+
+### ¿Qué son los filtros?
+Los filtros te permiten buscar y mostrar solo los datos que te interesan. Por ejemplo, puedes pedir solo las tareas que tienen cierta palabra en el título, o que están marcadas como completadas.
+
+---
+
+### ¿Por qué son útiles?
+Imagina que tienes cientos de tareas. Sin filtros, verías todo junto y sería difícil encontrar lo que buscas. Con filtros, puedes pedir solo lo que necesitas y la API te lo da ordenado y limpio.
+
+---
+
+### ¿Cómo se activan los filtros?
+DRF trae un sistema de filtros que puedes activar fácilmente:
+1. Instala el paquete de filtros:
+	```bash
+	pip install django-filter
+	```
+2. Añade el backend de filtros en settings.py:
+	```python
+	REST_FRAMEWORK = {
+		 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+	}
+	```
+3. En tu ViewSet, define los campos por los que quieres filtrar:
+	```python
+	class TaskModelViewSet(ModelViewSet):
+		 filterset_fields = ['title', 'completed']
+	```
+
+---
+
+### Ejemplo de uso
+Si tienes el campo `title`, puedes pedir:
+```
+/api/tasks/?title=limpiar
+```
+Y la API te devuelve solo las tareas que tienen "limpiar" en el título.
+
+---
+
+### Esquema visual
+```bash
+Request con filtro
+  ↓
+API busca solo lo que pides
+  ↓
+Respuesta con los datos filtrados
+```
+
+---
+
+¿Por qué crees que es útil poder combinar varios filtros? ¿Te gustaría probar a buscar tareas por diferentes campos?
+---
+
+## Permisos personalizados en DRF
+
+### ¿Qué es un permiso personalizado?
+Es una regla que tú mismo defines para controlar el acceso a tu API según tus propias condiciones. Por ejemplo, solo el creador de una tarea puede editarla.
+
+---
+
+### ¿Cómo se crea?
+1. Crea una clase que herede de `BasePermission`.
+2. Escribe el método `has_permission` (para acceso general) o `has_object_permission` (para acceso a un objeto concreto).
+
+---
+
+### Ejemplo básico
+Supongamos que solo el usuario que creó la tarea puede editarla o borrarla:
+
+```python
+from rest_framework.permissions import BasePermission
+
+class IsOwner(BasePermission):
+		def has_object_permission(self, request, view, obj):
+				# Solo permite si el usuario es el creador
+				return obj.owner == request.user
+```
+
+Luego, lo usas en tu ViewSet:
+```python
+class TaskModelViewSet(ModelViewSet):
+		permission_classes = [IsOwner]
+		# ...
+```
+
+---
+
+### Esquema de flujo
+```bash
+Request
+	↓
+¿Es el dueño?
+	↓         ↓
+Sí        No
+	↓         ↓
+Sigue    Error 403
+```
+
+---
+
+¿Qué tipo de reglas personalizadas crees que podrías necesitar en tu API? ¿Te gustaría probar a crear una?
 # Teoría básica de Django REST Framework (DRF)
 
 ## ¿Qué es DRF?

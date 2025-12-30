@@ -35,5 +35,8 @@ class TaskModelViewSet(ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
+    filterset_fields = {
+        'title' : ['icontains', 'exact']
+    }
 
 # COnfigura las apis para poder hacer CRUD(Create, Read, Update, Delete)

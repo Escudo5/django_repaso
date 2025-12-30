@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'accounts',
     'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -127,7 +128,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_PREMISSION_CLASSES':[
-        'rest_framework.permissions.IsAuthenticated',
-    ]
+    'DEFAULT_PREMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'] ,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
