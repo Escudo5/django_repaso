@@ -1,39 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useRef } from 'react'
 import './App.css'
-import Saludo from './assets/components/Saludo'
-import Contador from './assets/components/Contador'
+import TaskList from './components/TaskList'
+import TaskForm from './components/TaskForm'
+import Contador from './components/count'
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Usamos una key para forzar re-render del TaskList
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  // Función que se ejecuta cuando se crea una tarea
+  const handleTaskCreated = () => {
+    // Incrementar la key fuerza al TaskList a recargar
+    setRefreshKey(prev => prev + 1)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-  
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <Contador />
-      <div><Saludo mensaje="Hola Pepe"/></div>
+    <div className="app-container">
+      <header>
+        <h1>📝 Gestor de Tareas</h1>
+        <p>Conectado con Django REST API</p>
+      </header>
 
-    </>
+      <main>
+        {/* Componente Contador para pruebas */}
+        <Contador />
+        
+        {/* Formulario para crear tareas */}
+        <TaskForm onTaskCreated={handleTaskCreated} />
+        
+        {/* Lista de tareas - se recarga cuando cambia refreshKey */}
+        <TaskList key={refreshKey} />
+      </main>
+    </div>
   )
 }
 
